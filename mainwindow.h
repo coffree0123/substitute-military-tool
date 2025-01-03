@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QLabel>
 #include <QDate>
+#include <QWidget>
+#include <QTimer>
 #include <QVBoxLayout>
 
 class CountDownWidget : public QWidget
@@ -15,7 +17,6 @@ public:
     ~CountDownWidget();
 
 private:
-    void updateDisplay();
 
 private:
     QLabel* label;
