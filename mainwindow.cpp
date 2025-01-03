@@ -3,17 +3,15 @@
 #include <QLabel>
 #include <QWidget>
 #include <QTimer>
-#include <QVBoxLayout>
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QDateTime dischargeDateTime, QWidget *parent)
     : QMainWindow(parent)
 {
     centralWidget = new QWidget(this);
 
-    QVBoxLayout* mainLayout = new QVBoxLayout(centralWidget);
+    mainLayout = new QVBoxLayout(centralWidget);
 
-    QDateTime dischargeDateTime(QDate(2025, 5, 26), QTime(12, 0, 0));
-    CountDownWidget* countDown = new CountDownWidget(dischargeDateTime, this);
+    countDown = new CountDownWidget(dischargeDateTime, this);
 
     mainLayout -> addWidget(countDown);
 

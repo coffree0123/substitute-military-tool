@@ -4,19 +4,7 @@
 #include <QMainWindow>
 #include <QLabel>
 #include <QDate>
-
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
-
-public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
-
-private:
-    QWidget* centralWidget = nullptr;
-};
-
+#include <QVBoxLayout>
 
 class CountDownWidget : public QWidget
 {
@@ -33,6 +21,20 @@ private:
     QLabel* label;
     QTimer* timer;
     QDateTime dischargeDateTime;
+};
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    MainWindow(QDateTime dischargeDateTime, QWidget *parent = nullptr);
+    ~MainWindow();
+
+private:
+    QWidget* centralWidget = nullptr;
+    QVBoxLayout* mainLayout = nullptr;
+    CountDownWidget* countDown = nullptr;
 };
 
 #endif // MAINWINDOW_H
