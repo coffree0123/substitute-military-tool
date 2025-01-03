@@ -1,5 +1,8 @@
 #include "mainwindow.h"
 
+#include <QDir>
+using namespace std;
+
 
 MainWindow::MainWindow(QDateTime dischargeDateTime, QWidget *parent)
     : QMainWindow(parent)
@@ -8,11 +11,28 @@ MainWindow::MainWindow(QDateTime dischargeDateTime, QWidget *parent)
 
     mainLayout = new QVBoxLayout(centralWidget);
 
-    countDown = new CountDownWidget(dischargeDateTime, this);
+    mainLayout -> setContentsMargins(0, 0, 0, 0);
 
-    mainLayout -> addWidget(countDown);
+    this -> setFixedSize(1200, 800);
+    this -> setCentralWidget(centralWidget);
 
-    setCentralWidget(centralWidget);
+    // Setup background image
+    QPixmap image("/Users/coffree/program/substitute-military-tool/img/image.jpg");
+    backgroundImage = new QLabel(centralWidget);
+    backgroundImage -> setPixmap(image);
+    backgroundImage -> setScaledContents(true);
+
+    mainLayout -> addWidget(backgroundImage);
+
+    countDown = new CountDownWidget(dischargeDateTime, centralWidget);
+    countDown -> setStyleSheet("background-color: transparent;");
+    countDown -> setFixedSize(800, 200);
+
+    // Calculate best position for putting countDown widget
+    int x = (this -> width() - countDown -> width()) / 2;
+    int y = (this -> height() - countDown -> height()) / 4;
+
+    countDown -> setGeometry(x, y, countDown -> width(), countDown -> height());
 }
 
 MainWindow::~MainWindow() {}
@@ -23,7 +43,8 @@ CountDownWidget::CountDownWidget(const QDateTime& dischargeDateTime, QWidget *pa
     // Setup layout
     QVBoxLayout* layout = new QVBoxLayout(this);
     label = new QLabel(this);
-    layout->addWidget(label);
+    label -> setAlignment(Qt::AlignCenter);
+    layout -> addWidget(label);
 
     // Setup Timer
     timer = new QTimer(this);
@@ -37,10 +58,10 @@ CountDownWidget::CountDownWidget(const QDateTime& dischargeDateTime, QWidget *pa
         int minutesLeft = (leftSeconds % 3600) / 60;
         int secondsLeft = leftSeconds % 60;
 
-        label->setText(QString("<h1>距離退伍還有：%1 天 %2 時 %3 分 %4 秒<h1>")
+        label -> setText(QString("<h1>Hi Coffree!<br>距離離開這個鬼地方還有：%1 天 %2 時 %3 分 %4 秒<h1>")
                            .arg(daysLeft).arg(hoursLeft).arg(minutesLeft).arg(secondsLeft));
     });
-    timer->start(200); // Update every 0.2 sec
+    timer -> start(200); // Update every 0.2 sec
 }
 
 CountDownWidget::~CountDownWidget() {}

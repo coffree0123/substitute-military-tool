@@ -34,6 +34,7 @@ public:
 
 private:
     QWidget* centralWidget = nullptr;
+    QLabel* backgroundImage = nullptr;
     QVBoxLayout* mainLayout = nullptr;
     CountDownWidget* countDown = nullptr;
 };
