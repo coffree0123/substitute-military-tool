@@ -1,12 +1,17 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
+#include <QDir>
 #include <QLabel>
 #include <QDate>
 #include <QWidget>
 #include <QTimer>
+#include <QInputDialog>
+#include <QPushButton>
 #include <QVBoxLayout>
+#include <QTextEdit>
+#include <QMessageBox>
+#include <QMainWindow>
 
 class CountDownWidget : public QWidget
 {
@@ -24,6 +29,18 @@ private:
     QDateTime dischargeDateTime;
 };
 
+class DiaryDialog : public QDialog {
+public:
+    DiaryDialog(QWidget *parent = nullptr);
+    ~DiaryDialog() = default;
+
+    QString getText() const;
+
+private:
+    QTextEdit *textEdit;
+    QDialogButtonBox *buttonBox;
+};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -38,6 +55,7 @@ public:
 private:
     QWidget* centralWidget = nullptr;
     QLabel* backgroundImage = nullptr;
+    QPushButton* noteButton = nullptr;
     QVBoxLayout* mainLayout = nullptr;
     CountDownWidget* countDown = nullptr;
 };

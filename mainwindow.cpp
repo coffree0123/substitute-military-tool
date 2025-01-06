@@ -1,7 +1,26 @@
 #include "mainwindow.h"
 
-#include <QDir>
+#include <iostream>
 using namespace std;
+
+DiaryDialog::DiaryDialog(QWidget *parent) : QDialog(parent) {
+    textEdit = new QTextEdit(this);
+    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(textEdit);
+    layout->addWidget(buttonBox);
+
+    setLayout(layout);
+
+    setWindowTitle("Notebook");
+}
+
+QString DiaryDialog:: getText() const {
+    return textEdit->toPlainText();
+}
 
 
 MainWindow::MainWindow(QDateTime& dischargeDateTime, QWidget *parent)
@@ -10,6 +29,18 @@ MainWindow::MainWindow(QDateTime& dischargeDateTime, QWidget *parent)
     SetupMainLayout();
     SetupBackground();
     SetupCountDown(dischargeDateTime);
+
+    noteButton = new QPushButton("Take note", centralWidget);
+    mainLayout -> addWidget(noteButton);
+
+    connect(noteButton, &QPushButton::clicked, [&]{
+        DiaryDialog diaryDialog;
+        if (diaryDialog.exec() == QDialog::Accepted) {
+            string text = diaryDialog.getText().toStdString();
+            // 處理内容，例如保存到文件
+            cout << text << endl;
+        }
+    });
 }
 
 void MainWindow::SetupMainLayout()
