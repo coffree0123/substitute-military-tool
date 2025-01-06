@@ -29,7 +29,10 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QDateTime dischargeDateTime, QWidget *parent = nullptr);
+    MainWindow(QDateTime& dischargeDateTime, QWidget *parent = nullptr);
+    void SetupMainLayout();
+    void SetupBackground();
+    void SetupCountDown(QDateTime& dischargeDateTime);
     ~MainWindow();
 
 private:

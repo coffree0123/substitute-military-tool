@@ -4,18 +4,25 @@
 using namespace std;
 
 
-MainWindow::MainWindow(QDateTime dischargeDateTime, QWidget *parent)
+MainWindow::MainWindow(QDateTime& dischargeDateTime, QWidget *parent)
     : QMainWindow(parent)
 {
+    SetupMainLayout();
+    SetupBackground();
+    SetupCountDown(dischargeDateTime);
+}
+
+void MainWindow::SetupMainLayout()
+{
     centralWidget = new QWidget(this);
-
     mainLayout = new QVBoxLayout(centralWidget);
-
     mainLayout -> setContentsMargins(0, 0, 0, 0);
-
     this -> setFixedSize(1200, 800);
     this -> setCentralWidget(centralWidget);
+}
 
+void MainWindow::SetupBackground()
+{
     // Setup background image
     QPixmap image("/Users/coffree/program/substitute-military-tool/img/image.jpg");
     backgroundImage = new QLabel(centralWidget);
@@ -23,7 +30,11 @@ MainWindow::MainWindow(QDateTime dischargeDateTime, QWidget *parent)
     backgroundImage -> setScaledContents(true);
 
     mainLayout -> addWidget(backgroundImage);
+}
 
+void MainWindow::SetupCountDown(QDateTime& dischargeDateTime)
+{
+    // Setup count down widget and put it to the right place
     countDown = new CountDownWidget(dischargeDateTime, centralWidget);
     countDown -> setStyleSheet("background-color: transparent;");
     countDown -> setFixedSize(800, 200);
