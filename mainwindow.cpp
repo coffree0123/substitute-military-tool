@@ -3,6 +3,15 @@
 #include <iostream>
 using namespace std;
 
+
+string getWorkingDir()
+{
+    string filePath(__FILE__);
+    string workingDir = filePath.substr(0, filePath.find_last_of("/"));
+    //cout << "Get working directory: " << workingDir << std::endl;
+    return workingDir;
+}
+
 DiaryDialog::DiaryDialog(QWidget *parent)
     : QDialog(parent)
 {
@@ -12,19 +21,68 @@ DiaryDialog::DiaryDialog(QWidget *parent)
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
     QVBoxLayout *layout = new QVBoxLayout;
-    layout->addWidget(textEdit);
-    layout->addWidget(buttonBox);
+    layout -> addWidget(textEdit);
+    layout -> addWidget(buttonBox);
 
     setLayout(layout);
 
     setWindowTitle("Notebook");
+
+    // Save and load content to notebook
+    QDate currentDate = QDate::currentDate();
+    QString dateString = currentDate.toString("yyyyMMdd"); // Format date string to "yyyyMMdd"
+
+    saveFolder = QString::fromStdString(getWorkingDir() + "/note/");
+    fileName = saveFolder + "Date_" + dateString + ".txt";
+    loadFileContent();
 }
 
-QString DiaryDialog:: getText() const
+QString DiaryDialog::getText() const
 {
-    return textEdit->toPlainText();
+    return textEdit -> toPlainText();
 }
 
+void DiaryDialog::loadFileContent()
+{
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+
+    QTextStream in(&file);
+    textEdit -> setPlainText(in.readAll());
+    file.close();
+
+    // Move cursor to the end of the file
+    textEdit -> moveCursor(QTextCursor::End);
+}
+
+void DiaryDialog::saveFileContent()
+{
+    QString text = getText();
+    cout << "Save content: '" << text.toStdString() << "'" << " to file." << endl;
+
+    // Check if the path exist, if not then create one
+    QDir dir(saveFolder);
+    if (!dir.exists()) {
+        dir.mkpath(".");
+    }
+
+    QString fileContent = text;
+
+    QFile file(fileName);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        out << fileContent << "\n";
+        file.close();
+    } else {
+        qDebug() << "Cannot create file!";
+    }
+}
 
 MainWindow::MainWindow(QDateTime& dischargeDateTime, QWidget *parent)
     : QMainWindow(parent)
@@ -47,7 +105,7 @@ void MainWindow::SetupMainLayout()
 void MainWindow::SetupBackground()
 {
     // Setup background image
-    QPixmap image("/Users/coffree/program/substitute-military-tool/img/image.jpg");
+    QPixmap image(QString::fromStdString(getWorkingDir() + "/img/image.jpg"));
     backgroundImage = new QLabel(centralWidget);
     backgroundImage -> setPixmap(image);
     backgroundImage -> setScaledContents(true);
@@ -77,9 +135,7 @@ void MainWindow::SetupNoteBook()
     connect(noteButton, &QPushButton::clicked, [&]{
         DiaryDialog diaryDialog;
         if (diaryDialog.exec() == QDialog::Accepted) {
-            string text = diaryDialog.getText().toStdString();
-            // 處理内容，例如保存到文件
-            cout << text << endl;
+            diaryDialog.saveFileContent();
         }
     });
 }

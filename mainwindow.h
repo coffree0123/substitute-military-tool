@@ -12,6 +12,10 @@
 #include <QTextEdit>
 #include <QMessageBox>
 #include <QMainWindow>
+#include <QFileDialog>
+
+using namespace std;
+
 
 class CountDownWidget : public QWidget
 {
@@ -35,8 +39,12 @@ public:
     ~DiaryDialog() = default;
 
     QString getText() const;
+    void loadFileContent();
+    void saveFileContent();
 
 private:
+    QString saveFolder;
+    QString fileName;
     QTextEdit *textEdit;
     QDialogButtonBox *buttonBox;
 };
