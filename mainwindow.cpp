@@ -3,7 +3,9 @@
 #include <iostream>
 using namespace std;
 
-DiaryDialog::DiaryDialog(QWidget *parent) : QDialog(parent) {
+DiaryDialog::DiaryDialog(QWidget *parent)
+    : QDialog(parent)
+{
     textEdit = new QTextEdit(this);
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
@@ -18,7 +20,8 @@ DiaryDialog::DiaryDialog(QWidget *parent) : QDialog(parent) {
     setWindowTitle("Notebook");
 }
 
-QString DiaryDialog:: getText() const {
+QString DiaryDialog:: getText() const
+{
     return textEdit->toPlainText();
 }
 
@@ -29,18 +32,7 @@ MainWindow::MainWindow(QDateTime& dischargeDateTime, QWidget *parent)
     SetupMainLayout();
     SetupBackground();
     SetupCountDown(dischargeDateTime);
-
-    noteButton = new QPushButton("Take note", centralWidget);
-    mainLayout -> addWidget(noteButton);
-
-    connect(noteButton, &QPushButton::clicked, [&]{
-        DiaryDialog diaryDialog;
-        if (diaryDialog.exec() == QDialog::Accepted) {
-            string text = diaryDialog.getText().toStdString();
-            // 處理内容，例如保存到文件
-            cout << text << endl;
-        }
-    });
+    SetupNoteBook();
 }
 
 void MainWindow::SetupMainLayout()
@@ -75,6 +67,21 @@ void MainWindow::SetupCountDown(QDateTime& dischargeDateTime)
     int y = (this -> height() - countDown -> height()) / 4;
 
     countDown -> setGeometry(x, y, countDown -> width(), countDown -> height());
+}
+
+void MainWindow::SetupNoteBook()
+{
+    noteButton = new QPushButton("Take note", centralWidget);
+    mainLayout -> addWidget(noteButton);
+
+    connect(noteButton, &QPushButton::clicked, [&]{
+        DiaryDialog diaryDialog;
+        if (diaryDialog.exec() == QDialog::Accepted) {
+            string text = diaryDialog.getText().toStdString();
+            // 處理内容，例如保存到文件
+            cout << text << endl;
+        }
+    });
 }
 
 MainWindow::~MainWindow() {}

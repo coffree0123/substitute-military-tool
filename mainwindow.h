@@ -50,6 +50,7 @@ public:
     void SetupMainLayout();
     void SetupBackground();
     void SetupCountDown(QDateTime& dischargeDateTime);
+    void SetupNoteBook();
     ~MainWindow();
 
 private:
