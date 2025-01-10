@@ -6,9 +6,16 @@ DiaryDialog::DiaryDialog(QWidget *parent)
     : QDialog(parent)
 {
     textEdit = new QTextEdit(this);
-    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+
+    // Add button to text editor
+    buttonBox = new QDialogButtonBox(this);
+    buttonBox -> addButton(QDialogButtonBox::Ok);
+    buttonBox -> addButton(QDialogButtonBox::Cancel);
+    QPushButton *clearButton = buttonBox -> addButton("Clear", QDialogButtonBox::ActionRole);
+
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    connect(clearButton, &QPushButton::clicked, textEdit, &QTextEdit::clear);
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout -> addWidget(textEdit);
@@ -54,7 +61,7 @@ void DiaryDialog::loadFileContent()
 void DiaryDialog::saveFileContent()
 {
     QString text = getText();
-    cout << "Save content: '" << text.toStdString() << "'" << " to file." << endl;
+    cout << "Save content: '" << text.toStdString() << "'" << " to " << fileName.toStdString() << "." << endl;
 
     // Check if the path exist, if not then create one
     QDir dir(saveFolder);
