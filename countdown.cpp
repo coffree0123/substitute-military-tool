@@ -22,7 +22,7 @@ CountDownWidget::CountDownWidget(const QDateTime& dischargeDateTime, QWidget *pa
         int minutesLeft = (leftSeconds % 3600) / 60;
         int secondsLeft = leftSeconds % 60;
 
-        label -> setText(QString("<h1>Hi Coffree!<br>距離離開這個鬼地方還有：%1 天 %2 時 %3 分 %4 秒<h1>")
+        label -> setText(QString("<h1 style = \"color:blue\">Hi Coffree!<br>距離離開這個鬼地方還有：%1 天 %2 時 %3 分 %4 秒<h1>")
                            .arg(daysLeft).arg(hoursLeft).arg(minutesLeft).arg(secondsLeft));
     });
     timer -> start(200); // Update every 0.2 sec

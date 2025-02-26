@@ -25,16 +25,20 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QDateTime& dischargeDateTime, QWidget *parent = nullptr);
     void SetupMainLayout();
-    void SetupBackground();
-    void SetupCountDown(QDateTime& dischargeDateTime);
-    void SetupNoteBook();
     ~MainWindow();
 
 private:
+    void SetupBackground();
+    void SetupCountDown(QDateTime& dischargeDateTime);
+    void SetupNoteBook();
+    void SetupTools();
+
     QWidget* centralWidget = nullptr;
+    QWidget* toolWidget = nullptr;
     QLabel* backgroundImage = nullptr;
     QPushButton* noteButton = nullptr;
     QVBoxLayout* mainLayout = nullptr;
+    QHBoxLayout* toolLayout = nullptr;
     CountDownWidget* countDown = nullptr;
 };
 

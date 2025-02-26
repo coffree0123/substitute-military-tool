@@ -11,7 +11,7 @@ MainWindow::MainWindow(QDateTime& dischargeDateTime, QWidget *parent)
     SetupBackground();
     SetupMainLayout();
     SetupCountDown(dischargeDateTime);
-    SetupNoteBook();
+    SetupTools();
 }
 
 void MainWindow::SetupMainLayout()
@@ -19,7 +19,7 @@ void MainWindow::SetupMainLayout()
     centralWidget = new QWidget(this);
     mainLayout = new QVBoxLayout(centralWidget);
     centralWidget -> setLayout(mainLayout);
-    this -> setFixedSize(1200, 800);
+    // this -> setFixedSize(1200, 800);
     this -> setCentralWidget(centralWidget);
 }
 
@@ -40,10 +40,21 @@ void MainWindow::SetupCountDown(QDateTime& dischargeDateTime)
     mainLayout -> addWidget(countDown);
 }
 
+void MainWindow::SetupTools()
+{
+    // Create tool widget and corresponding layout
+    toolWidget = new QWidget(centralWidget);
+    mainLayout -> addWidget(toolWidget);
+    toolLayout = new QHBoxLayout(toolWidget);
+    toolWidget -> setLayout(toolLayout);
+
+    // Setup tools
+    SetupNoteBook();
+}
+
 void MainWindow::SetupNoteBook()
 {
-    noteButton = new QPushButton("Take note", centralWidget);
-    mainLayout -> addWidget(noteButton);
+    noteButton = new QPushButton("Take note", toolWidget);
 
     connect(noteButton, &QPushButton::clicked, [&]{
         DiaryDialog diaryDialog;
@@ -51,6 +62,8 @@ void MainWindow::SetupNoteBook()
             diaryDialog.saveFileContent();
         }
     });
+
+    toolLayout -> addWidget(noteButton);
 }
 
 MainWindow::~MainWindow() {}
