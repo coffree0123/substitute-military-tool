@@ -73,8 +73,7 @@ void MainWindow::SetupImgViewer()
     QPushButton* imgButton = new QPushButton("Image viewer", toolWidget);
 
     connect(imgButton, &QPushButton::clicked, [&]{
-        QString imagePath = QString::fromStdString(getWorkingDir() + "/img/image.jpg");
-        ImageViewer* imgViewer = new ImageViewer(imagePath);
+        ImageViewer* imgViewer = new ImageViewer();
         imgViewer -> show();
     });
 
