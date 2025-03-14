@@ -1,4 +1,3 @@
-#include "util.h"
 #include "imageviewer.h"
 
 ImageViewer::ImageViewer(QWidget* parent) : QWidget(parent)
@@ -6,14 +5,10 @@ ImageViewer::ImageViewer(QWidget* parent) : QWidget(parent)
     setWindowTitle("Image Viewer");
     imageLabel = new QLabel(this);
 
-    QString imagePath = QString::fromStdString(getWorkingDir() + "/img/image.jpg");
-    loadImage(imagePath);
-
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout -> addWidget(imageLabel);
     setLayout(layout);
-
-    // this -> setFixedSize(600, 400);
+    resize(600, 400);
     setAcceptDrops(true);
 }
 
