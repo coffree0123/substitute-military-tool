@@ -1,4 +1,5 @@
 #include "diary.h"
+#include "imageviewer.h"
 #include "util.h"
 #include "mainwindow.h"
 
@@ -19,7 +20,7 @@ void MainWindow::SetupMainLayout()
     centralWidget = new QWidget(this);
     mainLayout = new QVBoxLayout(centralWidget);
     centralWidget -> setLayout(mainLayout);
-    // this -> setFixedSize(1200, 800);
+    this -> setFixedSize(1200, 800);
     this -> setCentralWidget(centralWidget);
 }
 
@@ -30,7 +31,7 @@ void MainWindow::SetupBackground()
 
     // Setup style
     QString styleSheet = QString("QMainWindow { border-image: url(%1); }").arg(imagePath);
-    this->setStyleSheet(styleSheet);
+    this -> setStyleSheet(styleSheet);
 }
 
 void MainWindow::SetupCountDown(QDateTime& dischargeDateTime)
@@ -50,11 +51,12 @@ void MainWindow::SetupTools()
 
     // Setup tools
     SetupNoteBook();
+    SetupImgViewer();
 }
 
 void MainWindow::SetupNoteBook()
 {
-    noteButton = new QPushButton("Take note", toolWidget);
+    QPushButton* noteButton = new QPushButton("Take note", toolWidget);
 
     connect(noteButton, &QPushButton::clicked, [&]{
         DiaryDialog diaryDialog;
@@ -64,6 +66,19 @@ void MainWindow::SetupNoteBook()
     });
 
     toolLayout -> addWidget(noteButton);
+}
+
+void MainWindow::SetupImgViewer()
+{
+    QPushButton* imgButton = new QPushButton("Image viewer", toolWidget);
+
+    connect(imgButton, &QPushButton::clicked, [&]{
+        QString imagePath = QString::fromStdString(getWorkingDir() + "/img/image.jpg");
+        ImageViewer* imgViewer = new ImageViewer(imagePath);
+        imgViewer -> show();
+    });
+
+    toolLayout -> addWidget(imgButton);
 }
 
 MainWindow::~MainWindow() {}

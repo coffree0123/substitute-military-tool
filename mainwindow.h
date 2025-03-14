@@ -31,12 +31,12 @@ private:
     void SetupBackground();
     void SetupCountDown(QDateTime& dischargeDateTime);
     void SetupNoteBook();
+    void SetupImgViewer();
     void SetupTools();
 
     QWidget* centralWidget = nullptr;
     QWidget* toolWidget = nullptr;
     QLabel* backgroundImage = nullptr;
-    QPushButton* noteButton = nullptr;
     QVBoxLayout* mainLayout = nullptr;
     QHBoxLayout* toolLayout = nullptr;
     CountDownWidget* countDown = nullptr;

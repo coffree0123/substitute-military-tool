@@ -28,6 +28,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         countdown.h
         countdown.cpp
         util.cpp
+        imageviewer.h imageviewer.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET substitute-military-tool APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
