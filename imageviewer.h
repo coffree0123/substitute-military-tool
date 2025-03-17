@@ -9,6 +9,8 @@
 #include <QDragEnterEvent>
 #include <QMimeData>
 #include <QDropEvent>
+#include <QStatusBar>
+#include <QFileInfo>
 
 
 class ImageViewer : public QWidget
@@ -21,6 +23,7 @@ private:
     void dropEvent(QDropEvent* event) override;
 
     QLabel* imageLabel = nullptr;
+    QStatusBar *statusBar;
 };
 
 #endif // IMAGEVIEWER_H
