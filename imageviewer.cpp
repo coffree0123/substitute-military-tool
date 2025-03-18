@@ -1,11 +1,11 @@
 #include "imageviewer.h"
 
-ImageViewer::ImageViewer(QWidget* parent) : QWidget(parent)
+ImageViewer::ImageViewer(QWidget *parent) : QWidget(parent)
 {
     setWindowTitle("Image Viewer");
     imageLabel = new QLabel(this);
 
-    QVBoxLayout* layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
     layout -> addWidget(imageLabel);
     statusBar = new QStatusBar(this);
     layout -> addWidget(statusBar);
@@ -16,7 +16,7 @@ ImageViewer::ImageViewer(QWidget* parent) : QWidget(parent)
     setAcceptDrops(true);
 }
 
-void ImageViewer::dragEnterEvent(QDragEnterEvent* event)
+void ImageViewer::dragEnterEvent(QDragEnterEvent *event)
 {
     if (event -> mimeData() -> hasUrls())
     {
@@ -24,20 +24,21 @@ void ImageViewer::dragEnterEvent(QDragEnterEvent* event)
     }
 }
 
-void ImageViewer::dropEvent(QDropEvent* event)
+void ImageViewer::dropEvent(QDropEvent *event)
 {
     const QUrl url = event -> mimeData() -> urls().first();
     const QString filePath = url.toLocalFile();
 
     loadImage(filePath);
+    updateImage();
     event -> acceptProposedAction();
 }
 
 void ImageViewer::loadImage(const QString &imagePath)
 {
-    QPixmap pixmap(imagePath);
-    int width = pixmap.width();
-    int height = pixmap.height();
+    originalPixmap.load(imagePath);
+    int width = originalPixmap.width();
+    int height = originalPixmap.height();
     QFileInfo fileInfo(imagePath);
     int byteSize = fileInfo.size();
 
@@ -46,7 +47,50 @@ void ImageViewer::loadImage(const QString &imagePath)
                              .arg(height)
                              .arg(byteSize);
     this -> statusBar -> showMessage(statusInfo);
+}
 
-    this -> imageLabel -> setPixmap(pixmap);
-    this -> imageLabel -> setScaledContents(true);
+void ImageViewer::updateImage()
+{
+    if (originalPixmap.isNull())
+        return;
+
+    QPixmap scaledPixmap = originalPixmap.scaled(
+        originalPixmap.size() * scaleFactor,
+        Qt::KeepAspectRatio,
+        Qt::SmoothTransformation);
+
+    imageLabel -> setPixmap(scaledPixmap);
+
+    // Update status bar and show zoom information
+    QString currentStatus = statusBar -> currentMessage();
+    QString zoomInfo = QString(" | Zoom: %1%").arg(scaleFactor * 100);
+    statusBar -> showMessage(currentStatus.split(" |").first() + zoomInfo);
+}
+
+void ImageViewer::wheelEvent(QWheelEvent *event)
+{
+    // Scrolling up gives positive delta, scrolling down gives negative delta
+    int delta = event -> angleDelta().y();
+
+    // Adjust the scaling factor, zoom 10% each time
+    if (delta > 0)
+    {
+        // Zoom out
+        scaleFactor -= 0.1;
+    }
+    else
+    {
+        // Zoom in
+        scaleFactor += 0.1;
+    }
+
+    // Limit the scaling range to prevent excessive zooming
+    if (scaleFactor < 0.1)
+        scaleFactor = 0.1;
+    if (scaleFactor > 2.0)
+        scaleFactor = 2.0;
+
+    updateImage();
+
+    event -> accept();
 }
