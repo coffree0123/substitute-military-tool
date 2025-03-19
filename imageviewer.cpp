@@ -4,9 +4,15 @@ ImageViewer::ImageViewer(QWidget *parent) : QWidget(parent)
 {
     setWindowTitle("Image Viewer");
     imageLabel = new QLabel(this);
+    imageLabel -> setAlignment(Qt::AlignCenter);
+    
+    scrollArea = new QScrollArea(this);
+    scrollArea -> setWidget(imageLabel);
+    scrollArea -> setWidgetResizable(true);
+    scrollArea -> setAlignment(Qt::AlignCenter);
 
     QVBoxLayout *layout = new QVBoxLayout(this);
-    layout -> addWidget(imageLabel);
+    layout -> addWidget(scrollArea);
     statusBar = new QStatusBar(this);
     layout -> addWidget(statusBar);
     statusBar -> setFixedHeight(20);
@@ -60,6 +66,7 @@ void ImageViewer::updateImage()
         Qt::SmoothTransformation);
 
     imageLabel -> setPixmap(scaledPixmap);
+    imageLabel -> resize(scaledPixmap.size());
 
     // Update status bar and show zoom information
     QString currentStatus = statusBar -> currentMessage();
@@ -76,12 +83,12 @@ void ImageViewer::wheelEvent(QWheelEvent *event)
     if (delta > 0)
     {
         // Zoom out
-        scaleFactor -= 0.1;
+        scaleFactor -= 0.05;
     }
     else
     {
         // Zoom in
-        scaleFactor += 0.1;
+        scaleFactor += 0.05;
     }
 
     // Limit the scaling range to prevent excessive zooming

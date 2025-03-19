@@ -12,7 +12,7 @@
 #include <QStatusBar>
 #include <QFileInfo>
 #include <QWheelEvent>
-
+#include <QScrollArea>
 
 class ImageViewer : public QWidget
 {
@@ -27,8 +27,9 @@ private:
 
     QLabel* imageLabel = nullptr;
     QStatusBar *statusBar;
+    QScrollArea *scrollArea;
     QPixmap originalPixmap;
-    double scaleFactor = 1.0;
+    double scaleFactor = 0.6;
 };
 
 #endif // IMAGEVIEWER_H
