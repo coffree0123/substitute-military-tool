@@ -1,5 +1,6 @@
 #include "diary.h"
 #include "imageviewer.h"
+#include "videoviewer.h"
 #include "util.h"
 #include "mainwindow.h"
 
@@ -52,6 +53,7 @@ void MainWindow::SetupTools()
     // Setup tools
     SetupNoteBook();
     SetupImgViewer();
+    SetupVideoViewer();
 }
 
 void MainWindow::SetupNoteBook()
@@ -78,6 +80,18 @@ void MainWindow::SetupImgViewer()
     });
 
     toolLayout -> addWidget(imgButton);
+}
+
+void MainWindow::SetupVideoViewer()
+{
+    QPushButton* videoButton = new QPushButton("Video viewer", toolWidget);
+
+    connect(videoButton, &QPushButton::clicked, [&]{
+        VideoViewer* videoViewer = new VideoViewer();
+        videoViewer -> show();
+    });
+
+    toolLayout -> addWidget(videoButton);
 }
 
 MainWindow::~MainWindow() {}

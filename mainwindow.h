@@ -33,6 +33,7 @@ private:
     void SetupNoteBook();
     void SetupImgViewer();
     void SetupTools();
+    void SetupVideoViewer();
 
     QWidget* centralWidget = nullptr;
     QWidget* toolWidget = nullptr;
