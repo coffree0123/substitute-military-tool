@@ -4,6 +4,7 @@
 VideoViewer::VideoViewer(QWidget *parent) : QWidget(parent)
 {
     setWindowTitle("Video Viewer");
+    this -> setAttribute(Qt::WA_DeleteOnClose);
     resize(800, 600);
 
     // Create media player and video widget

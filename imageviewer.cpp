@@ -3,6 +3,7 @@
 ImageViewer::ImageViewer(QWidget *parent) : QWidget(parent)
 {
     setWindowTitle("Image Viewer");
+    this -> setAttribute(Qt::WA_DeleteOnClose);
     imageLabel = new QLabel(this);
     imageLabel -> setAlignment(Qt::AlignCenter);
     
